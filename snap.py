@@ -2,76 +2,61 @@ import random
 import cards
 from random import randint
 from time import sleep
-
-NAME_1 = 'Coco'
-NAME_2 = 'Dora'
-
-MIN_THINKING = 1
-MAX_THINKING = 2
-
-
-def draw():
-    print('draw!!!!')
-    exit()
+import constant as c
+import user_interface as ui
 
 
 class Snap:
+    """ The Snap object
 
-    #shuffle cards and divide into two players
-    def get_decks(self):
+    To start a game, call the run_game() method
+
+    Attributes:
+        self.deck - a deck of cards used in the game (sorted)
+        get_decks - shuffles the deck and divides it equally among the players
+        start_game - starts a game of snap
+
+    """
+
+    def __init__(self):
         self.deck = cards.generate_deck()
+
+    def get_decks(self):
+        """ Shuffles a deck of cards and divides it into two (for two players)"""
         random.shuffle(self.deck)
         deck1 = self.deck[:len(self.deck) // 2]
         deck2 = self.deck[len(self.deck) // 2:]
         return deck1, deck2
 
-    #take a card and remove it from player's deck
-    def get_top_card(self, deck):
-        if len(deck) !=0:
-            return deck.pop(-1)
-        else:
-            draw()
-
-
-    def think(self, card_1, card_2):
-        sleep(randint(MIN_THINKING, MAX_THINKING))
-        if card_1.value == card_2.value:
-            players = [NAME_1, NAME_2]
-            winner = random.choice(players)
-            print(winner, ': Snap!')
-            print(winner, 'wins!')
-            exit()
-        else:
-            return
-
-
-
     def start_game(self):
-        global deck, name
-        print('Starting the game Snap')
-        #get player's decks
+        """ Starts a game of Snap"""
+        print('Starting the game Snap...')
+        sleep(1)
+        # get player's decks
         deck_1, deck_2 = self.get_decks()
 
-        #initialise the game with two cards
-        card_1 = self.get_top_card(deck_1)
-        print('displayed card of ', NAME_1, ': ', card_1)
-        sleep(randint(MIN_THINKING, MAX_THINKING))
-        card_2 = self.get_top_card(deck_2)
-        print('displayed card of ', NAME_2, ': ', card_2)
-        winner = 0
+        # initialise the game with two cards
+        card_1 = ui.get_top_card(deck_1)
+        print(c.NAME_1, 'displays card', card_1)
+        # wait before displaying the second card
+        sleep(randint(c.MIN_THINKING, c.MAX_THINKING))
 
-        while not(len(deck_1) == 0 or len(deck_2) == 0):
-            self.think(card_1, card_2)
-            card_1 = self.get_top_card(deck_1)
-            print('displayed card of ', NAME_1, ': ', card_1)
-            self.think(card_1, card_2)
+        card_2 = ui.get_top_card(deck_2)
+        print(c.NAME_2, 'displays card', card_2)
 
-            card_2 = self.get_top_card(deck_2)
-            print('displayed card of ', NAME_2, ': ', card_2)
-            # if self.think(card_1, card_2) == 1:
-            #     break
-            self.think(card_1, card_2)
+        while not (len(deck_1) == 0 or len(deck_2) == 0):
+            # check if the values are the same
+            ui.think(card_1, card_2)
 
+            # display another card
+            card_1 = ui.get_top_card(deck_1)
+            print(c.NAME_1, 'displays card', card_1)
+            ui.think(card_1, card_2)
 
-        if (len(deck_1) == 0 or len(deck_2) == 0):
-            draw()
+            card_2 = ui.get_top_card(deck_2)
+            print(c.NAME_2, 'displays card', card_2)
+            ui.think(card_1, card_2)
+
+        # draw if a player runs out of their cards
+        if len(deck_1) == 0 or len(deck_2) == 0:
+            ui.draw()

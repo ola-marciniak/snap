@@ -10,6 +10,6 @@ class Card(namedtuple('CardData', ['suit', 'value'])):
 
 
 def generate_deck():
-    """Generate sorted full deck of cards"""
+    """Generates a deck of cards"""
     return [Card(suit, value)
             for suit in Card.suits for value in Card.values]

@@ -5,7 +5,7 @@ and when the value of the card turned matches the previous one, the quickest pla
 A random 'thinking' time is added after displaying a card.
 
 
-##How to run it
+## How to run it
 To start the game run 'main.py' file. 
 
 Names of the players and their thinking time can be changed in the 'constant.py' file. 
